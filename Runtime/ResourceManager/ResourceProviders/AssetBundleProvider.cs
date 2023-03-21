@@ -1,3 +1,4 @@
+#define ASSETBUNDLE_SYNC
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
         RequestedAssetAndDependencies = 0,
         AllPackedAssetsAndDependencies,
     }
-    
+
     /// <summary>
     /// Wrapper for asset bundles.
     /// </summary>
@@ -50,50 +51,120 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
         /// <summary>
         /// Hash value of the asset bundle.
         /// </summary>
-        public string Hash { get { return m_Hash; } set { m_Hash = value; } }
+        public string Hash
+        {
+            get
+            {
+                return m_Hash;
+            }
+            set
+            {
+                m_Hash = value;
+            }
+        }
         [FormerlySerializedAs("m_crc")]
         [SerializeField]
         uint m_Crc;
         /// <summary>
         /// CRC value of the bundle.
         /// </summary>
-        public uint Crc { get { return m_Crc; } set { m_Crc = value; } }
+        public uint Crc
+        {
+            get
+            {
+                return m_Crc;
+            }
+            set
+            {
+                m_Crc = value;
+            }
+        }
         [FormerlySerializedAs("m_timeout")]
         [SerializeField]
         int m_Timeout;
         /// <summary>
         /// Sets UnityWebRequest to attempt to abort after the number of seconds in timeout have passed.
         /// </summary>
-        public int Timeout { get { return m_Timeout; } set { m_Timeout = value; } }
+        public int Timeout
+        {
+            get
+            {
+                return m_Timeout;
+            }
+            set
+            {
+                m_Timeout = value;
+            }
+        }
         [FormerlySerializedAs("m_chunkedTransfer")]
         [SerializeField]
         bool m_ChunkedTransfer;
         /// <summary>
         /// Indicates whether the UnityWebRequest system should employ the HTTP/1.1 chunked-transfer encoding method.
         /// </summary>
-        public bool ChunkedTransfer { get { return m_ChunkedTransfer; } set { m_ChunkedTransfer = value; } }
+        public bool ChunkedTransfer
+        {
+            get
+            {
+                return m_ChunkedTransfer;
+            }
+            set
+            {
+                m_ChunkedTransfer = value;
+            }
+        }
         [FormerlySerializedAs("m_redirectLimit")]
         [SerializeField]
         int m_RedirectLimit = -1;
         /// <summary>
         /// Indicates the number of redirects which this UnityWebRequest will follow before halting with a “Redirect Limit Exceeded” system error.
         /// </summary>
-        public int RedirectLimit { get { return m_RedirectLimit; } set { m_RedirectLimit = value; } }
+        public int RedirectLimit
+        {
+            get
+            {
+                return m_RedirectLimit;
+            }
+            set
+            {
+                m_RedirectLimit = value;
+            }
+        }
         [FormerlySerializedAs("m_retryCount")]
         [SerializeField]
         int m_RetryCount;
         /// <summary>
         /// Indicates the number of times the request will be retried.
         /// </summary>
-        public int RetryCount { get { return m_RetryCount; } set { m_RetryCount = value; } }
+        public int RetryCount
+        {
+            get
+            {
+                return m_RetryCount;
+            }
+            set
+            {
+                m_RetryCount = value;
+            }
+        }
 
         [SerializeField]
         string m_BundleName = null;
         /// <summary>
         /// The name of the original bundle.  This does not contain the appended hash.
         /// </summary>
-        public string BundleName { get { return m_BundleName; } set { m_BundleName = value; } }
-        
+        public string BundleName
+        {
+            get
+            {
+                return m_BundleName;
+            }
+            set
+            {
+                m_BundleName = value;
+            }
+        }
+
         [SerializeField]
         AssetLoadMode m_AssetLoadMode = AssetLoadMode.RequestedAssetAndDependencies;
         /// <summary>
@@ -103,35 +174,85 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
         /// Requested Asset And Dependencies, will only load the requested Asset (Recommended).
         /// All Packed Assets And Dependencies, will load all Assets that are packed together. Best used when loading all Assets into memory is required.
         ///</remarks>
-        internal AssetLoadMode AssetLoadMode { get { return m_AssetLoadMode; } set { m_AssetLoadMode = value; } }
+        internal AssetLoadMode AssetLoadMode
+        {
+            get
+            {
+                return m_AssetLoadMode;
+            }
+            set
+            {
+                m_AssetLoadMode = value;
+            }
+        }
 
         [SerializeField]
         long m_BundleSize;
         /// <summary>
         /// The size of the bundle, in bytes.
         /// </summary>
-        public long BundleSize { get { return m_BundleSize; } set { m_BundleSize = value; } }
+        public long BundleSize
+        {
+            get
+            {
+                return m_BundleSize;
+            }
+            set
+            {
+                m_BundleSize = value;
+            }
+        }
 
         [SerializeField]
         bool m_UseCrcForCachedBundles;
         /// <summary>
         /// If false, the CRC will not be used when loading bundles from the cache.
         /// </summary>
-        public bool UseCrcForCachedBundle { get { return m_UseCrcForCachedBundles; } set { m_UseCrcForCachedBundles = value; } }
+        public bool UseCrcForCachedBundle
+        {
+            get
+            {
+                return m_UseCrcForCachedBundles;
+            }
+            set
+            {
+                m_UseCrcForCachedBundles = value;
+            }
+        }
 
         [SerializeField]
         bool m_UseUWRForLocalBundles;
         /// <summary>
         /// If true, UnityWebRequest will be used even if the bundle is stored locally.
         /// </summary>
-        public bool UseUnityWebRequestForLocalBundles { get { return m_UseUWRForLocalBundles; } set { m_UseUWRForLocalBundles = value; } }
+        public bool UseUnityWebRequestForLocalBundles
+        {
+            get
+            {
+                return m_UseUWRForLocalBundles;
+            }
+            set
+            {
+                m_UseUWRForLocalBundles = value;
+            }
+        }
 
         [SerializeField]
         bool m_ClearOtherCachedVersionsWhenLoaded;
         /// <summary>
         /// If false, the CRC will not be used when loading bundles from the cache.
         /// </summary>
-        public bool ClearOtherCachedVersionsWhenLoaded { get { return m_ClearOtherCachedVersionsWhenLoaded; } set { m_ClearOtherCachedVersionsWhenLoaded = value; } }
+        public bool ClearOtherCachedVersionsWhenLoaded
+        {
+            get
+            {
+                return m_ClearOtherCachedVersionsWhenLoaded;
+            }
+            set
+            {
+                m_ClearOtherCachedVersionsWhenLoaded = value;
+            }
+        }
 
         /// <summary>
         /// Computes the amount of data needed to be downloaded for this bundle.
@@ -240,7 +361,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
             m_ProvideHandle.ResourceManager.WebRequestOverride?.Invoke(webRequest);
             return webRequest;
         }
-        
+
         internal AssetBundleRequest GetAssetPreloadRequest()
         {
             if (m_PreloadCompleted || GetAssetBundle() == null)
@@ -255,6 +376,10 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                     m_PreloadCompleted = true;
                     return null;
                 }
+#elif ASSETBUNDLE_SYNC
+                m_AssetBundle.LoadAllAssets();
+                m_PreloadCompleted = true;
+                return null;
 #endif
                 if (m_PreloadRequest == null)
                 {
@@ -267,7 +392,10 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
             return null;
         }
 
-        float PercentComplete() { return m_RequestOperation != null ? m_RequestOperation.progress : 0.0f; }
+        float PercentComplete()
+        {
+            return m_RequestOperation != null ? m_RequestOperation.progress : 0.0f;
+        }
 
         DownloadStatus GetDownloadStatus()
         {
@@ -331,7 +459,10 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
 
             //We don't want to wait for request op to complete if it's a LoadFromFileAsync. Only UWR will complete in a tight loop like this.
             if (!(m_RequestOperation is AssetBundleCreateRequest))
-                while (!m_RequestOperation.isDone) { System.Threading.Thread.Sleep(k_WaitForWebRequestMainThreadSleep); }
+                while (!m_RequestOperation.isDone)
+                {
+                    System.Threading.Thread.Sleep(k_WaitForWebRequestMainThreadSleep);
+                }
 
             if (m_RequestOperation is UnityWebRequestAsyncOperation && !m_WebRequestCompletedCallbackCalled)
             {
@@ -356,7 +487,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
             else
                 operation.completed += callback;
         }
-        
+
         internal static void GetLoadInfo(ProvideHandle handle, out LoadType loadType, out string path)
         {
             var options = handle.Location?.Data as AssetBundleRequestOptions;
@@ -366,7 +497,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                 path = null;
                 return;
             }
-            
+
             path = handle.ResourceManager.TransformInternalId(handle.Location);
             if (Application.platform == RuntimePlatform.Android && path.StartsWith("jar:"))
                 loadType = options.UseUnityWebRequestForLocalBundles ? LoadType.Web : LoadType.Local;
@@ -391,6 +522,12 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
 #if !UNITY_2021_1_OR_NEWER
                 if (AsyncOperationHandle.IsWaitingForCompletion)
                     CompleteBundleLoad(AssetBundle.LoadFromFile(m_TransformedInternalId, m_Options == null ? 0 : m_Options.Crc));
+                else
+#elif ASSETBUNDLE_SYNC
+                if (true)
+                {
+                    CompleteBundleLoad(AssetBundle.LoadFromFile(m_TransformedInternalId, m_Options == null ? 0 : m_Options.Crc));
+                }
                 else
 #endif
                 {
@@ -475,7 +612,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                 webReq = m_WebRequestQueueOperation.m_WebRequest;
                 if (uwrResult == null)
                     uwrResult = new UnityWebRequestResult(m_WebRequestQueueOperation.m_WebRequest);
-                
+
                 m_downloadHandler = webReq.downloadHandler as DownloadHandlerAssetBundle;
                 m_downloadHandler.Dispose();
                 m_downloadHandler = null;

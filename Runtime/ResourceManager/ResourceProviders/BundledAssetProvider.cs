@@ -1,3 +1,4 @@
+#define ASSETBUNDLE_SYNC
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,7 +21,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
             object m_Result;
             ProvideHandle m_ProvideHandle;
             string subObjectName = null;
-            
+
             internal static AssetBundleResource LoadBundleFromDependecies(IList<object> results)
             {
                 if (results == null || results.Count == 0)
@@ -65,7 +66,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                         m_ProvideHandle.Complete<AssetBundle>(null, false, new Exception("Unable to load dependent bundle from location " + m_ProvideHandle.Location));
                         return;
                     }
-                    
+
                     m_PreloadRequest = bundleResource.GetAssetPreloadRequest();
                     if (m_PreloadRequest == null || m_PreloadRequest.isDone)
                         BeginAssetLoad();
@@ -92,6 +93,13 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                             CompleteOperation();
                         }
                         else
+#elif ASSETBUNDLE_SYNC
+                        if (true)
+                        {
+                            GetArrayResult(m_AssetBundle.LoadAssetWithSubAssets(assetPath, m_ProvideHandle.Type.GetElementType()));
+                            CompleteOperation();
+                        }
+                        else
 #endif
                             m_RequestOperation = m_AssetBundle.LoadAssetWithSubAssetsAsync(assetPath, m_ProvideHandle.Type.GetElementType());
                     }
@@ -99,6 +107,13 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                     {
 #if !UNITY_2021_1_OR_NEWER
                         if (AsyncOperationHandle.IsWaitingForCompletion)
+                        {
+                            GetListResult(m_AssetBundle.LoadAssetWithSubAssets(assetPath, m_ProvideHandle.Type.GetGenericArguments()[0]));
+                            CompleteOperation();
+                        }
+                        else
+#elif ASSETBUNDLE_SYNC
+                        if (true)
                         {
                             GetListResult(m_AssetBundle.LoadAssetWithSubAssets(assetPath, m_ProvideHandle.Type.GetGenericArguments()[0]));
                             CompleteOperation();
@@ -119,6 +134,13 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                                 CompleteOperation();
                             }
                             else
+#elif ASSETBUNDLE_SYNC
+                            if (true)
+                            {
+                                GetAssetSubObjectResult(m_AssetBundle.LoadAssetWithSubAssets(mainPath, m_ProvideHandle.Type));
+                                CompleteOperation();
+                            }
+                            else
 #endif
                                 m_RequestOperation = m_AssetBundle.LoadAssetWithSubAssetsAsync(mainPath, m_ProvideHandle.Type);
                         }
@@ -131,11 +153,18 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                                 CompleteOperation();
                             }
                             else
+#elif ASSETBUNDLE_SYNC
+                            if (true)
+                            {
+                                GetAssetResult(m_AssetBundle.LoadAsset(assetPath, m_ProvideHandle.Type));
+                                CompleteOperation();
+                            }
+                            else
 #endif
                                 m_RequestOperation = m_AssetBundle.LoadAssetAsync(assetPath, m_ProvideHandle.Type);
                         }
                     }
-                    
+
                     if (m_RequestOperation != null)
                     {
                         if (m_RequestOperation.isDone)
@@ -158,7 +187,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                     return true;
                 return m_RequestOperation.asset != null;
             }
-            
+
             private void ActionComplete(AsyncOperation obj)
             {
                 if (m_RequestOperation != null)
@@ -174,7 +203,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                 }
                 CompleteOperation();
             }
-            
+
             private void GetArrayResult(Object[] allAssets)
             {
                 m_Result = ResourceManagerConfig.CreateArrayResult(m_ProvideHandle.Type, allAssets);
@@ -189,7 +218,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
             {
                 m_Result = (asset != null && m_ProvideHandle.Type.IsAssignableFrom(asset.GetType())) ? asset : null;
             }
-            
+
             private void GetAssetSubObjectResult(Object[] allAssets)
             {
                 foreach (var o in allAssets)
@@ -204,7 +233,7 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                     }
                 }
             }
-            
+
             void CompleteOperation()
             {
                 Exception e = m_Result == null
@@ -213,7 +242,10 @@ namespace UnityEngine.ResourceManagement.ResourceProviders
                 m_ProvideHandle.Complete(m_Result, m_Result != null, e);
             }
 
-            public float ProgressCallback() { return m_RequestOperation != null ? m_RequestOperation.progress : 0.0f; }
+            public float ProgressCallback()
+            {
+                return m_RequestOperation != null ? m_RequestOperation.progress : 0.0f;
+            }
         }
 
         /// <inheritdoc/>
